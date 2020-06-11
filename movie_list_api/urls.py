@@ -1,4 +1,4 @@
-"""movie_list_api URL Configuration
+"""mysite URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
@@ -15,7 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth import views as auth_views
+from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.dokumentasi, name="dokumentasi"),
+    path('profil/', views.profil, name="profil"),
+    path('daftar/', views.daftar, name="daftar"),
+    path('login/', auth_views.LoginView.as_view(template_name='masuk.html'), name='login'),
+    path('keluar/', auth_views.logout_then_login, name='keluar'),
+    path('hello/', views.HelloView.as_view(), name='hello'),
 ]
