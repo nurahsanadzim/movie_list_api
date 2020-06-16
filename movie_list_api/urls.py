@@ -27,4 +27,6 @@ urlpatterns = [
     path('keluar/', auth_views.logout_then_login, name='keluar'),
     path('movie_id/<int:movie_id>', views.movie_id, name='movie_id'),
     path('jumlah_movie/<int:amount>', views.jumlah_movie, name='jumlah_movie'),
+    path('tambah_movie/', views.tambah_movie, name='tambah_movie'),
+    path('edit_movie/', views.edit_movie, name='edit_movie'),
 ]

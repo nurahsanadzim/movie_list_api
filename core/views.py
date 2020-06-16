@@ -1,25 +1,29 @@
 import json
 from django.urls import reverse
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from rest_framework.response import Response
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
-from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.decorators import login_required
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from .models import Movie
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
+from core.serializers import MovieSerializer
+from core.models import Movie
+
 
 def dokumentasi(request):
     return render(request, 'dokumentasi.html')
 
 @login_required
 def profil(request):
-    usertoken = Token.objects.get(user=request.user)
-    return render(request, 'profil.html' ,{
-        'token': usertoken
-    })
+    user_token = Token.objects.get(user=request.user)
+    return render(
+        request, 'profil.html',
+        {'token': user_token}
+    )
 
 def daftar(request):
     form = UserCreationForm(request.POST)
@@ -40,19 +44,19 @@ def daftar(request):
 @permission_classes([IsAuthenticated])
 def movie_id(request, movie_id):
     try:
-        movie_data = Movie.objects.get(id=movie_id)
+        movie = Movie.objects.get(id=movie_id)
     except Movie.DoesNotExist:
-        data = 'Tidak menemukan movie dengan id tersebut!'
+        data = 'Tidak menemukan movie dengan id tersebut!, mungkin sudah terhapus atau tidak tersedia.'
     else:
         data = {
-            'judul': movie_data.title,
-            'overview': movie_data.overview,
-            'genre': [g['name'] for g in json.loads(movie_data.genres)],
-            'rilis': movie_data.release_date,
-            'durasi': str(int(float(movie_data.runtime))) + ' menit',
-            'bahasa': movie_data.original_language,
-            'popularitas': movie_data.popularity,
-            'homepage': movie_data.homepage
+            'title': movie.title,
+            'overview': movie.overview,
+            'genres': [g['name'] for g in json.loads(movie.genres)] if movie.genres != '-' else '-',
+            'release_date': movie.release_date,
+            'runtime': movie.runtime + ' menit' if movie.runtime != '-' else '-',
+            'original_language': movie.original_language,
+            'popularity': movie.popularity,
+            'homepage': movie.homepage
         }
     return Response(data)
 
@@ -63,15 +67,62 @@ def jumlah_movie(request, amount):
     data = [
         {
             'id': movie.id,
-            'judul': movie.title,
+            'title': movie.title,
             'overview': movie.overview,
-            'genre': [g['name'] for g in json.loads(movie.genres)],
-            'rilis': movie.release_date,
-            'durasi': str(int(float(movie.runtime))) + ' menit',
-            'bahasa': movie.original_language,
-            'popularitas': movie.popularity,
+            'genres': [g['name'] for g in json.loads(movie.genres)] if movie.genres != '-' else '-',
+            'release_date': movie.release_date,
+            'runtime': movie.runtime + ' menit' if movie.runtime != '-' else '-',
+            'original_language': movie.original_language,
+            'popularity': movie.popularity,
             'homepage': movie.homepage
         }
         for movie in query_result
     ]
     return Response(data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def tambah_movie(request):
+    movie = request.data.dict()
+    if 'title' in movie:
+        # handle jika ada genres
+        if 'genres' in movie:
+            movie['genres'] = json.dumps([ {'name':g} for g in movie['genres'].split(',')])
+        # parse dengan serializer Movie untuk di validasi
+        serializer = MovieSerializer(data=movie)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    'Pesan': 'Data berhasil disimpan.', 
+                    'movie_id data yang disimpan': serializer.data['id']
+                }, 
+                status=status.HTTP_201_CREATED
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return JsonResponse({'Pesan': "mohon tambahkan required body parameter 'judul'."})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def edit_movie(request):
+    movie = request.data.dict()
+    if 'id' in movie:
+        try:
+            to_edit = Movie.objects.get(pk=movie['id'])
+        except Movie.DoesNotExist:
+            return Response({'Pesan':'Data dengan id tersebut tidak ditemukan.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if 'genres' in movie:
+            movie['genres'] = json.dumps([ {'name':g} for g in movie['genres'].split(',')])
+        # hapus id dari dict untuk di update ke database
+        del movie['id']
+        # update object yang di di update berdasarkan field yang di request
+        for field in movie:
+            setattr(to_edit, field, movie[field])
+        # simpan hasil perubahan object ke database
+        to_edit.save()
+        return Response({'Pesan: Data berhasil diupdate.'})
+    else:
+        return JsonResponse({'Pesan': "mohon tambahkan required body parameter 'id'."})
