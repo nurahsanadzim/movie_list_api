@@ -1,7 +1,7 @@
 # movie_list_api
-My college assignment, API for list of movie, created with [django-rest-framework](https://www.django-rest-framework.org), with token-based authentication.
+My college assignment, API for list of movie, created with [django-rest-framework](https://www.django-rest-framework.org), with token-based authentication and [tmdb](https://www.kaggle.com/tmdb/tmdb-movie-metadata) edited dataset.
 
-### Requirements:
+### Requirements
 * Python 3
 * Django 3.0.7
 * django-rest-framework 3.11.0
@@ -12,10 +12,10 @@ My college assignment, API for list of movie, created with [django-rest-framewor
 2. Install Package yang diperlukan dengan command: `pip install Django==3.0.7 djangorestframework==3.11.0`.
 3. Pindah pada posisi folder `movie_list_api`, yang terdapat file `manage.py`.
 4. Jalankan server dengan command: `python manage.py runserver`.
-5. Buka browser dengan membuka alamat: http://127.0.0.1:8000/ untuk menuju ke halaman dokumentasi.
+5. Buka browser dengan membuka alamat: http://127.0.0.1:8000/ untuk menuju ke halaman dokumentasi API.
 6. Untuk menggunakan API, daftarkan akun anda di http://127.0.0.1:8000/daftar/, otomatis anda akan mendapatkan token API.
 
-### Demo Youtube:
+### Demo Youtube
 https://www.youtube.com/watch?
 
 ---

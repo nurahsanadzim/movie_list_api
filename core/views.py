@@ -49,6 +49,7 @@ def movie_id(request, movie_id):
         data = 'Tidak menemukan movie dengan id tersebut!, mungkin sudah terhapus atau tidak tersedia.'
     else:
         data = {
+            'id': movie.id,
             'title': movie.title,
             'overview': movie.overview,
             'genres': [g['name'] for g in json.loads(movie.genres)] if movie.genres != '-' else '-',
@@ -91,17 +92,15 @@ def tambah_movie(request):
         # parse dengan serializer Movie untuk di validasi
         serializer = MovieSerializer(data=movie)
         if serializer.is_valid():
-            serializer.save()
+            # simpan ke database
+            serializer.save()      
             return Response(
-                {
-                    'Pesan': 'Data berhasil disimpan.', 
-                    'movie_id data yang disimpan': serializer.data['id']
-                }, 
+                'Data berhasil disimpan, id data yang disimpan: ' + str(serializer.data['id']) + '.',
                 status=status.HTTP_201_CREATED
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
-        return JsonResponse({'Pesan': "mohon tambahkan required body parameter 'judul'."})
+        return Response("Mohon tambahkan required body parameter 'title'.")
 
 
 @api_view(['POST'])
@@ -112,7 +111,10 @@ def edit_movie(request):
         try:
             to_edit = Movie.objects.get(pk=movie['id'])
         except Movie.DoesNotExist:
-            return Response({'Pesan':'Data dengan id tersebut tidak ditemukan.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                'Data dengan id tersebut tidak ditemukan.', 
+                status=status.HTTP_404_NOT_FOUND
+            )
 
         if 'genres' in movie:
             movie['genres'] = json.dumps([ {'name':g} for g in movie['genres'].split(',')])
@@ -123,6 +125,6 @@ def edit_movie(request):
             setattr(to_edit, field, movie[field])
         # simpan hasil perubahan object ke database
         to_edit.save()
-        return Response({'Pesan: Data berhasil diupdate.'})
+        return Response('Data berhasil diupdate.')
     else:
-        return JsonResponse({'Pesan': "mohon tambahkan required body parameter 'id'."})
+        return Response("Mohon tambahkan required body parameter 'id'.")

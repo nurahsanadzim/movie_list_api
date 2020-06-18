@@ -1,4 +1,39 @@
-{{user}}
-<br>
-Token anda: <strong>Token {{token}}</strong>
-<h2><a href="{% url 'keluar' %}">Keluar</a></h2>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar</title>
+  <style>
+    input {font-weight:bold;}
+  </style>
+</head>
+
+<body>
+  <ul>
+    <li>Username anda: {{user}}</li>
+    <li>Token anda: <input disabled id="token" size="44" type="text" value="Token {{token}}"> <button onclick="clipboardCopy()">Copy Token</button>
+    </li>
+  </ul>
+  <h2><a href="{% url 'dokumentasi' %}">Ke Halaman Dokumentasi</a></h2>
+  <h2><a href="{% url 'keluar' %}" onclick="return confirm('Keluar?')">Keluar</a></h2>
+  <script>
+    function clipboardCopy() {
+      /* Get the text field */
+      var copyText = document.getElementById("token");
+
+      /* Select the text field */
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+
+      /* Alert the copied text */
+      alert("Copied: " + copyText.value);
+    }
+  </script>
+</body>
+
+</html>

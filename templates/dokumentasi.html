@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<title>Daftar Endpoint Movie List API</title>
+<title>Dokumentasi Movie List API</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script defer src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 <style>
   html,
   body,
@@ -26,6 +27,19 @@
     bottom: 0;
     height: inherit;
   }
+
+  code, h3 {
+    font-weight: bold;
+  }
+
+  pre {
+    font-size: 80%;
+  }
+
+/* black border hr */
+hr.new1 {
+  border-top: 1px dashed black;
+}
 </style>
 
 <body>
@@ -35,7 +49,7 @@
     <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
       <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1"
         href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
-      <a class="w3-bar-item w3-theme-l1">Halaman Dokumentasi</a>
+      <a class="w3-bar-item w3-theme-l1">Halaman Dokumentasi Movie List API</a>
     </div>
   </div>
 
@@ -46,9 +60,15 @@
       <i class="fa fa-remove"></i>
     </a>
     <h4 class="w3-bar-item"><b>Menu</b></h4>
-    <a class="w3-bar-item w3-button w3-hover-black" href="#">Login</a>
-    <a class="w3-bar-item w3-button w3-hover-black" href="#">Daftar</a>
-    <a class="w3-bar-item w3-button w3-hover-black" href="#">Keluar</a>
+    {% if user.is_authenticated %}
+      <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'profil' %}">Profil ({{user.username}})</a>
+    {% else %}
+      <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'login' %}">Login</a>
+    {% endif %}
+    <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'daftar' %}">Daftar</a>
+    {% if user.is_authenticated %}
+      <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'keluar' %}" onclick="return confirm('Keluar?')">Keluar</a>
+    {% endif %}
   </nav>
 
   <!-- Overlay effect when opening sidebar on small screens -->
@@ -57,54 +77,242 @@
 
   <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
   <div class="w3-main" style="margin-left:250px">
-    
+
     <div class="w3-padding-64">
       <div class="w3-row w3-container">
-        <h1 class="w3-text-teal">Daftar Endpoint Movie List API</h1>
+        <h3 class="w3-text-black">Introduction</h3>
         <p>
+          Movie List API ini menyediakan database movie yang diambil dari <a target="_blank" href="https://www.kaggle.com/tmdb/tmdb-movie-metadata">TMBD Movie Dataset</a> yang dibuat dengan lebih sederhana. API ini menggunakan sistem Token-based Authentication. Anda dapat memperoleh token dengan membuat akun di <a target="_blank" href="http://127.0.0.1:8000/daftar/">halaman ini</a> (pastikan aplikasi web sudah berjalan). Untuk menggunakan layanan API ini, anda perlu autentikasi dengan menyisipkan token key di <code>Authorization</code> HTTP header. Contoh token yang anda peroleh seperti ini: <code>Token 4c42c713214d70cadfdd45e21a8f8520c91e8606</code>.
         </p>
+        <hr>
+        <h3 class="w3-text-black">Example Request</h3>
+        <ul>
+          <li><strong>cURL</strong> (<a href="https://curl.haxx.se/">https://curl.haxx.se/</a>)</li>
+<pre class="prettyprint">
+curl --location --request GET 'http://127.0.0.1:8000/movie_id/1' \
+--header 'Authorization: Token d5f18ca6314a156a865eb809db58fc4f309e2d62'
+</pre>
+          <li><strong>Httpie</strong> (<a href="https://httpie.org/">https://httpie.org/</a>)</li>
+<pre class="prettyprint">
+http --follow --timeout 3600 GET 127.0.0.1:8000/movie_id/1 \
+Authorization:'Token d5f18ca6314a156a865eb809db58fc4f309e2d62'
+</pre>
+        </ul>
+        <hr>
+        <h3 class="w3-text-black">Note</h3>
+        <ul>
+          <li>
+            Semua <code>Content-Type</code> response header bertipe <code>application/json</code>.
+          </li>
+          <li>
+            Pada method <code>POST</code>, gunakan <code>Content-Type</code> header bertipe <code>application/x-www-form-urlencoded</code> dalam melakukan request yang memiliki parameter <code>Body</code>.
+          </li>
+          <li>Response Body yang berisi value string <code>"-"</code> (tanda minus) berarti data tersebut kosong.</li>
+          <li>Contoh - contoh request ke endpoint yang ditampilkan di halaman ini menggunakan <code>cURL</code>.</li>
+        </ul>
+        <hr>
+        <h3 class="w3-text-black">Endpoint List</h3>
 
-        {<br>
-          &emsp;"judul": "Batman v Superman: Dawn of Justice",<br>
-          &emsp;"overview": "Fearing the actions of a god-like Super Hero left unchecked, Gotham Cityâ€™s own formidable, forceful vigilante takes on Metropolisâ€™s most revered, modern-day savior, while the world wrestles with what sort of hero it really needs. And with Batman and Superman at war with one another, a new threat quickly arises, putting mankind in greater danger than itâ€™s ever known before.",<br>
-          &emsp;"genre": [<br>
-          &emsp;&emsp;"Action",<br>
-          &emsp;&emsp;"Adventure",<br>
-          &emsp;&emsp;"Fantasy"<br>
-          &emsp;],<br>
-          &emsp;"rilis": "3/23/2016",<br>
-          &emsp;"durasi": "151 menit",<br>
-          &emsp;"bahasa": "en",<br>
-          &emsp;"popularitas": "155.790452",<br>
-          &emsp;"homepage": "http://www.batmanvsupermandawnofjustice.com/"<br>
-        }
+        <h4>Movie ID</h4>
+        <div class="w3-bar w3-green w3-round">
+          <div class="w3-bar-item">
+            <div class="w3-tag w3-round w3-green">
+              <div class="w3-tag w3-round w3-green w3-border w3-border-white">GET</div>
+            </div>
+            http://127.0.0.1:8000/movie/{id}
+          </div>
+        </div>
+        <ul>
+          <li>Description: mengambil data movie berdasarkan id movie.</li>
+          <li>URL Parameter: <strong>id (required)</strong>.</li>
+          <li>Example request:</li>
+<pre class="prettyprint">
+curl --location --request GET 'http://127.0.0.1:8000/movie_id/1' \
+--header 'Authorization: Token d5f18ca6314a156a865eb809db58fc4f309e2d62'
+</pre>
+          <li>Example response: <button onclick="accordion('movie_id')" class="w3-padding-small w3-tiny w3-button w3-round w3-teal">Show/hide</button></li>
+          <div id="movie_id" class="w3-hide">
+<pre class="prettyprint lang-js">
+{
+  "id": 1,
+  "title": "Avatar",
+  "overview": "In the 22nd century, a paraplegic Marine is dispatched ...",
+  "genres": [
+      "Action",
+      "Adventure",
+      "Fantasy",
+      "Science Fiction"
+  ],
+  "release_date": "12/10/2009",
+  "runtime": "162.0 menit",
+  "original_language": "en",
+  "popularity": "150.437577",
+  "homepage": "http://www.avatarmovie.com/"
+}
+</pre>
+          </div>
+        </ul>
+        <hr class="new1">
 
+        <h4>Jumlah Movie</h4>
+        <div class="w3-bar w3-green w3-round">
+          <div class="w3-bar-item">
+            <div class="w3-tag w3-round w3-green">
+              <div class="w3-tag w3-round w3-green w3-border w3-border-white">GET</div>
+            </div>
+            http://127.0.0.1:8000/jumlah_movie/{jumlah}
+          </div>
+        </div>
+        <ul>
+          <li>Description: mengambil beberapa data movie sebanyak parameter jumlah, berurut berdasarkan id movie.</li>
+          <li>URL Parameter: <strong>jumlah (required)</strong>.</li>
+          <li>Example request:</li>
+<pre class="prettyprint">
+curl --location --request GET 'http://127.0.0.1:8000/jumlah_movie/3' \
+--header 'Authorization: Token d5f18ca6314a156a865eb809db58fc4f309e2d62'
+</pre>
+          <li>Example response: <button onclick="accordion('jumlah_movie')" class="w3-padding-small w3-tiny w3-button w3-round w3-teal">Show/hide</button></li>
+          <div id="jumlah_movie" class="w3-hide">
+<pre class="prettyprint">
+[
+  {
+    "id": 1,
+    "title": "Avatar",
+    "overview": "In the 22nd century, a paraplegic Marine is dispatched ...",
+    "genres": [
+        "Action",
+        "Adventure",
+        "Fantasy",
+        "Science Fiction"
+    ],
+    "release_date": "12/10/2009",
+    "runtime": "162.0 menit",
+    "original_language": "en",
+    "popularity": "150.437577",
+    "homepage": "http://www.avatarmovie.com/"
+  },
+  {
+    "id": 2,
+    "title": "Pirates of the Caribbean: At World's End",
+    "overview": "Captain Barbossa, long believed to be dead, has come back ...",
+    "genres": [
+        "Adventure",
+        "Fantasy",
+        "Action"
+    ],
+    "release_date": "5/19/2007",
+    "runtime": "169.0 menit",
+    "original_language": "en",
+    "popularity": "139.082615",
+    "homepage": "http://disney.go.com/disneypictures/pirates/"
+  },
+  {
+    "id": 3,
+    "title": "Spectre",
+    "overview": "A cryptic message from Bondâ€™s past sends him on a trail ...",
+    "genres": [
+        "Action",
+        "Adventure",
+        "Crime"
+    ],
+    "release_date": "10/26/2015",
+    "runtime": "148.0 menit",
+    "original_language": "en",
+    "popularity": "107.37678799999999",
+    "homepage": "http://www.sonypictures.com/movies/spectre/"
+  }
+]
+</pre>
+          </div>
+        </ul>
+
+        <hr class="new1">
+
+        <h4>Edit Movie</h4>
+        <div class="w3-bar w3-blue w3-round">
+          <div class="w3-bar-item">
+            <div class="w3-tag w3-round w3-blue">
+              <div class="w3-tag w3-round w3-blue w3-border w3-border-white">POST</div>
+            </div>
+            http://127.0.0.1:8000/edit_movie/
+          </div>
+        </div>
+        <ul>
+          <li>Description: mengedit data yang ada di database berdasarkan id movie.</li>
+          <li>Body Parameter (application/x-www-form-urlencoded):
+            <ul>
+              <li><strong>id (required)</strong>: string</li>
+              <li>title: string</li>
+              <li>overview: string</li>
+              <li>genres: string, separate with commas</li>
+              <li>release_date: string, with format mm/dd/yyyy</li>
+              <li>runtime: string</li>
+              <li>original_language: string</li>
+              <li>popularity: string</li>
+              <li>homepage: string</li>
+            </ul>
+          </li>
+          <li>Example request:</li>
+<pre class="prettyprint">
+curl --location --request POST 'http://127.0.0.1:8000/edit_movie/' \
+--header 'Authorization: Token d5f18ca6314a156a865eb809db58fc4f309e2d62' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'id=100' \
+--data-urlencode 'title=Judul Baru' \
+--data-urlencode 'genres=Action,Fantasy' \
+--data-urlencode 'release_date=04/24/2020' \
+--data-urlencode 'homepage=www.homepagejudulbaru.com'
+</pre>
+          <li>Example response (success):</li>
+<pre class="prettyprint">"Data berhasil diupdate."</pre>
+          <li>Example response (fail, no 'id' body parameter):</li>
+<pre class="prettyprint">"Mohon tambahkan required body parameter 'id'."</pre>
+          <li>Example response (fail, movie id not found):</li>
+<pre class="prettyprint">"Data dengan id tersebut tidak ditemukan."</pre>
+
+        </ul>
+        <hr class="new1">
+
+        <h4>Tambah Movie</h4>
+        <div class="w3-bar w3-blue w3-round">
+          <div class="w3-bar-item">
+            <div class="w3-tag w3-round w3-blue">
+              <div class="w3-tag w3-round w3-blue w3-border w3-border-white">POST</div>
+            </div>
+            http://127.0.0.1:8000/tambah_movie/
+          </div>
+        </div>
+        <ul>
+          <li>Description: menambahkan data movie baru ke database.</li>
+          <li>Body Parameter (application/x-www-form-urlencoded):
+            <ul>
+              <li><strong>title (required)</strong>: string</li>
+              <li>overview: string</li>
+              <li>genres: string, separate with commas</li>
+              <li>release_date: string, with format mm/dd/yyyy</li>
+              <li>runtime: string</li>
+              <li>original_language: string</li>
+              <li>popularity: string</li>
+              <li>homepage: string</li>
+            </ul>
+          </li>
+          <li>Example request:</li>
+<pre class="prettyprint">
+curl --location --request POST 'http://127.0.0.1:8000/tambah_movie/' \
+--header 'Authorization: Token d5f18ca6314a156a865eb809db58fc4f309e2d62' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'title=Judul Baru' \
+--data-urlencode 'overview=Overview Movie Baru' \
+--data-urlencode 'genres=Romance,Adventure'
+--data-urlencode 'release_date=02/16/2020' \
+</pre>
+          <li>Example response (success, Status 201 Created):</li>
+<pre class="prettyprint">"Data berhasil disimpan, id data yang disimpan: 232."</pre>
+          <li>Example response (fail, no 'title' body parameter):</li>
+<pre class="prettyprint">"Mohon tambahkan required body parameter 'title'."</pre>
+        </ul>
 
       </div>
-  
-      <div class="w3-row w3-container">
-        <h1 class="w3-text-teal">Heading</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-          dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-          ex ea commodo consequat. Lorem ipsum
-          dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat.
-        </p>
-      </div>
-  
-      <div class="w3-row w3-container">
-        <h1 class="w3-text-teal">Heading</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-          dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-          ex ea commodo consequat. Lorem ipsum
-          dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat.
-        </p>
-      </div>
-
-
     </div>
 
 
@@ -140,6 +348,15 @@
       mySidebar.style.display = "none";
       overlayBg.style.display = "none";
     }
+
+  function accordion(id) {
+    var x = document.getElementById(id);
+    if (x.className.indexOf("w3-show") == -1) {
+      x.className += " w3-show";
+    } else { 
+      x.className = x.className.replace(" w3-show", "");
+    }
+  }
   </script>
 
 </body>
