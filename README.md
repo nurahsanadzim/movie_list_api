@@ -1,5 +1,5 @@
 # movie_list_api
-My college assignment, API for list of movie, created with [django-rest-framework](https://www.django-rest-framework.org), with token-based authentication and [tmdb](https://www.kaggle.com/tmdb/tmdb-movie-metadata) edited dataset.
+My college assignment, API for list of movie, created with [django-rest-framework](https://www.django-rest-framework.org), with token-based authentication and [TMDB](https://www.kaggle.com/tmdb/tmdb-movie-metadata) edited dataset.
 
 ### Requirements
 * Python 3
@@ -16,7 +16,7 @@ My college assignment, API for list of movie, created with [django-rest-framewor
 6. Untuk menggunakan API, daftarkan akun anda di http://127.0.0.1:8000/daftar/, otomatis anda akan mendapatkan token API.
 
 ### Demo Youtube
-https://www.youtube.com/watch?
+https://youtu.be/XDIuXBrM5CE
 
 ---
 

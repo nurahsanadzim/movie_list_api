@@ -9,17 +9,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script defer src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 <style>
-  html,
-  body,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  html,body,h1,h2,h3,h4,h5,h6 {
     font-family: "Roboto", sans-serif;
   }
-
   .w3-sidebar {
     z-index: 3;
     width: 250px;
@@ -27,24 +19,14 @@
     bottom: 0;
     height: inherit;
   }
-
   code, h3 {
     font-weight: bold;
   }
-
   pre {
     font-size: 80%;
   }
-
-/* black border hr */
-hr.new1 {
-  border-top: 1px dashed black;
-}
 </style>
-
 <body>
-
-  <!-- Navbar -->
   <div class="w3-top">
     <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
       <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1"
@@ -52,8 +34,6 @@ hr.new1 {
       <a class="w3-bar-item w3-theme-l1">Halaman Dokumentasi Movie List API</a>
     </div>
   </div>
-
-  <!-- Sidebar -->
   <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar">
     <a href="javascript:void(0)" onclick="w3_close()"
       class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
@@ -70,29 +50,22 @@ hr.new1 {
       <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'keluar' %}" onclick="return confirm('Keluar?')">Keluar</a>
     {% endif %}
   </nav>
-
-  <!-- Overlay effect when opening sidebar on small screens -->
   <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu"
     id="myOverlay"></div>
-
-  <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
   <div class="w3-main" style="margin-left:250px">
-
     <div class="w3-padding-64">
       <div class="w3-row w3-container">
         <h3 class="w3-text-black">Introduction</h3>
-        <p>
-          Movie List API ini menyediakan database movie yang diambil dari <a target="_blank" href="https://www.kaggle.com/tmdb/tmdb-movie-metadata">TMBD Movie Dataset</a> yang dibuat dengan lebih sederhana. API ini menggunakan sistem Token-based Authentication. Anda dapat memperoleh token dengan membuat akun di <a target="_blank" href="http://127.0.0.1:8000/daftar/">halaman ini</a> (pastikan aplikasi web sudah berjalan). Untuk menggunakan layanan API ini, anda perlu autentikasi dengan menyisipkan token key di <code>Authorization</code> HTTP header. Contoh token yang anda peroleh seperti ini: <code>Token 4c42c713214d70cadfdd45e21a8f8520c91e8606</code>.
-        </p>
+        <p>Movie List API ini menyediakan database movie yang diambil dari <a target="_blank" href="https://www.kaggle.com/tmdb/tmdb-movie-metadata">TMBD Movie Dataset</a> yang dibuat dengan lebih sederhana. API ini menggunakan sistem Token-based Authentication. Anda dapat memperoleh token dengan membuat akun di <a target="_blank" href="http://127.0.0.1:8000/daftar/">halaman ini</a> (pastikan aplikasi web sudah berjalan). Untuk menggunakan layanan API ini, anda perlu autentikasi dengan menyisipkan token key di <code>Authorization</code> HTTP header. Contoh token yang anda peroleh seperti ini: <code>Token 4c42c713214d70cadfdd45e21a8f8520c91e8606</code>.</p>
         <hr>
         <h3 class="w3-text-black">Example Request</h3>
         <ul>
-          <li><strong>cURL</strong> (<a href="https://curl.haxx.se/">https://curl.haxx.se/</a>)</li>
+          <li><strong>cURL</strong> (<a target="_blank" href="https://curl.haxx.se">https://curl.haxx.se</a>)</li>
 <pre class="prettyprint">
 curl --location --request GET 'http://127.0.0.1:8000/movie_id/1' \
 --header 'Authorization: Token d5f18ca6314a156a865eb809db58fc4f309e2d62'
 </pre>
-          <li><strong>Httpie</strong> (<a href="https://httpie.org/">https://httpie.org/</a>)</li>
+          <li><strong>Httpie</strong> (<a target="_blank" href="https://httpie.org">https://httpie.org</a>)</li>
 <pre class="prettyprint">
 http --follow --timeout 3600 GET 127.0.0.1:8000/movie_id/1 \
 Authorization:'Token d5f18ca6314a156a865eb809db58fc4f309e2d62'
@@ -101,18 +74,13 @@ Authorization:'Token d5f18ca6314a156a865eb809db58fc4f309e2d62'
         <hr>
         <h3 class="w3-text-black">Note</h3>
         <ul>
-          <li>
-            Semua <code>Content-Type</code> response header bertipe <code>application/json</code>.
-          </li>
-          <li>
-            Pada method <code>POST</code>, gunakan <code>Content-Type</code> header bertipe <code>application/x-www-form-urlencoded</code> dalam melakukan request yang memiliki parameter <code>Body</code>.
-          </li>
+          <li>Semua <code>Content-Type</code> response header bertipe <code>application/json</code>.</li>
+          <li>Pada method <code>POST</code>, gunakan <code>Content-Type</code> header bertipe <code>application/x-www-form-urlencoded</code> dalam melakukan request yang memiliki parameter <code>Body</code>.</li>
           <li>Response Body yang berisi value string <code>"-"</code> (tanda minus) berarti data tersebut kosong.</li>
           <li>Contoh - contoh request ke endpoint yang ditampilkan di halaman ini menggunakan <code>cURL</code>.</li>
         </ul>
         <hr>
         <h3 class="w3-text-black">Endpoint List</h3>
-
         <h4>Movie ID</h4>
         <div class="w3-bar w3-green w3-round">
           <div class="w3-bar-item">
@@ -152,8 +120,7 @@ curl --location --request GET 'http://127.0.0.1:8000/movie_id/1' \
 </pre>
           </div>
         </ul>
-        <hr class="new1">
-
+        <hr>
         <h4>Jumlah Movie</h4>
         <div class="w3-bar w3-green w3-round">
           <div class="w3-bar-item">
@@ -225,9 +192,46 @@ curl --location --request GET 'http://127.0.0.1:8000/jumlah_movie/3' \
 </pre>
           </div>
         </ul>
-
-        <hr class="new1">
-
+        <hr>
+        <h4>Tambah Movie</h4>
+        <div class="w3-bar w3-blue w3-round">
+          <div class="w3-bar-item">
+            <div class="w3-tag w3-round w3-blue">
+              <div class="w3-tag w3-round w3-blue w3-border w3-border-white">POST</div>
+            </div>
+            http://127.0.0.1:8000/tambah_movie/
+          </div>
+        </div>
+        <ul>
+          <li>Description: menambahkan data movie baru ke database.</li>
+          <li>Body Parameter (application/x-www-form-urlencoded):
+            <ul>
+              <li><strong>title (required)</strong>: string</li>
+              <li>overview: string</li>
+              <li>genres: string, separate with commas</li>
+              <li>release_date: string, with format mm/dd/yyyy</li>
+              <li>runtime: string</li>
+              <li>original_language: string</li>
+              <li>popularity: string</li>
+              <li>homepage: string</li>
+            </ul>
+          </li>
+          <li>Example request:</li>
+<pre class="prettyprint">
+curl --location --request POST 'http://127.0.0.1:8000/tambah_movie/' \
+--header 'Authorization: Token d5f18ca6314a156a865eb809db58fc4f309e2d62' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'title=Judul Baru' \
+--data-urlencode 'overview=Overview Movie Baru' \
+--data-urlencode 'genres=Romance,Adventure'
+--data-urlencode 'release_date=02/16/2020' \
+</pre>
+          <li>Example response (success, Status 201 Created):</li>
+<pre class="prettyprint">"Data berhasil disimpan, id data yang disimpan: 232."</pre>
+          <li>Example response (fail, no 'title' body parameter):</li>
+<pre class="prettyprint">"Mohon tambahkan required body parameter 'title'."</pre>
+        </ul>
+        <hr>
         <h4>Edit Movie</h4>
         <div class="w3-bar w3-blue w3-round">
           <div class="w3-bar-item">
@@ -269,70 +273,19 @@ curl --location --request POST 'http://127.0.0.1:8000/edit_movie/' \
 <pre class="prettyprint">"Mohon tambahkan required body parameter 'id'."</pre>
           <li>Example response (fail, movie id not found):</li>
 <pre class="prettyprint">"Data dengan id tersebut tidak ditemukan."</pre>
-
         </ul>
-        <hr class="new1">
-
-        <h4>Tambah Movie</h4>
-        <div class="w3-bar w3-blue w3-round">
-          <div class="w3-bar-item">
-            <div class="w3-tag w3-round w3-blue">
-              <div class="w3-tag w3-round w3-blue w3-border w3-border-white">POST</div>
-            </div>
-            http://127.0.0.1:8000/tambah_movie/
-          </div>
-        </div>
-        <ul>
-          <li>Description: menambahkan data movie baru ke database.</li>
-          <li>Body Parameter (application/x-www-form-urlencoded):
-            <ul>
-              <li><strong>title (required)</strong>: string</li>
-              <li>overview: string</li>
-              <li>genres: string, separate with commas</li>
-              <li>release_date: string, with format mm/dd/yyyy</li>
-              <li>runtime: string</li>
-              <li>original_language: string</li>
-              <li>popularity: string</li>
-              <li>homepage: string</li>
-            </ul>
-          </li>
-          <li>Example request:</li>
-<pre class="prettyprint">
-curl --location --request POST 'http://127.0.0.1:8000/tambah_movie/' \
---header 'Authorization: Token d5f18ca6314a156a865eb809db58fc4f309e2d62' \
---header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'title=Judul Baru' \
---data-urlencode 'overview=Overview Movie Baru' \
---data-urlencode 'genres=Romance,Adventure'
---data-urlencode 'release_date=02/16/2020' \
-</pre>
-          <li>Example response (success, Status 201 Created):</li>
-<pre class="prettyprint">"Data berhasil disimpan, id data yang disimpan: 232."</pre>
-          <li>Example response (fail, no 'title' body parameter):</li>
-<pre class="prettyprint">"Mohon tambahkan required body parameter 'title'."</pre>
-        </ul>
-
+        <hr>
       </div>
     </div>
-
-
     <footer id="myFooter">
       <div class="w3-container w3-theme-l1">
         <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
       </div>
     </footer>
-
-    <!-- END MAIN -->
   </div>
-
   <script>
-    // Get the Sidebar
     var mySidebar = document.getElementById("mySidebar");
-
-    // Get the DIV with overlay effect
     var overlayBg = document.getElementById("myOverlay");
-
-    // Toggle between showing and hiding the sidebar, and add overlay effect
     function w3_open() {
       if (mySidebar.style.display === 'block') {
         mySidebar.style.display = 'none';
@@ -342,23 +295,18 @@ curl --location --request POST 'http://127.0.0.1:8000/tambah_movie/' \
         overlayBg.style.display = "block";
       }
     }
-
-    // Close the sidebar with the close button
     function w3_close() {
       mySidebar.style.display = "none";
       overlayBg.style.display = "none";
     }
-
-  function accordion(id) {
-    var x = document.getElementById(id);
-    if (x.className.indexOf("w3-show") == -1) {
-      x.className += " w3-show";
-    } else { 
-      x.className = x.className.replace(" w3-show", "");
+    function accordion(id) {
+      var x = document.getElementById(id);
+      if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+      } else { 
+        x.className = x.className.replace(" w3-show", "");
+      }
     }
-  }
   </script>
-
 </body>
-
 </html>
