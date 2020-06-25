@@ -16,7 +16,7 @@ My college assignment, API for list of movie, created with [django-rest-framewor
 6. Untuk menggunakan API, daftarkan akun anda di http://127.0.0.1:8000/daftar/, otomatis anda akan mendapatkan token API.
 
 ### Demo Youtube
-https://youtu.be/XDIuXBrM5CE
+https://youtu.be/nk86TWa9MxA
 
 ---
 
